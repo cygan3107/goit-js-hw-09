@@ -1,3 +1,4 @@
+import throttle from 'lodash.throttle';
 const formFeed = document.querySelector('.feedback-form');
 const emailInput = document.querySelector('input[name="email"]');
 const messageInput = document.querySelector('textarea[name="message"]');
@@ -25,7 +26,7 @@ if (localStorage.getItem('feedback-form-state')) {
   }
 }
 
-forFeed.addEventListener(
+formFeed.addEventListener(
   'input',
   throttle(event => {
     formValue[event.target.name] = event.target.value;
@@ -35,6 +36,9 @@ forFeed.addEventListener(
 
 formFeed.addEventListener('submit', event => {
   event.preventDefault();
+  if (emailInput.value === '' || messageInput.value === '') {
+    return alert('All form fields must be completed.');
+  }
   console.log(formValue);
   localStorage.removeItem('feedback-form-state');
   emailInput.value = '';
